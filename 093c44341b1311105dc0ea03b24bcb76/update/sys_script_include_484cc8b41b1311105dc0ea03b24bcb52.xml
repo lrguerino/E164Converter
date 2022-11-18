@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <active>true</active>
+        <api_name>x_441902_e164_conv.E164Converter</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description>This script include intends to format any telehone numbers to an E164 format. For the Twillio integration this is a must.&#13;
+&#13;
+var number = "2252140435";&#13;
+var util = E164Converter(number, "1");&#13;
+&#13;
+gs.info(util.getRaw())&#13;
+Output: 2252140435&#13;
+&#13;
+gs.info(util.getCCC())&#13;
+Output: 1&#13;
+&#13;
+gs.info(util.getFormatted())&#13;
+Output: +12252140435&#13;
+&#13;
+gs.info(JSON.stringify(util.getOutput()))&#13;
+{"raw":"2252140435","isRawValid":false,"formatted":"+12252140435","isFormattedValid":true,"countryCode":"1"}</description>
+        <name>E164Converter</name>
+        <script><![CDATA[var E164Converter = function (phoneNumber, ccc) {
+
+    var REGEX = {
+        VALIDATE: /^\+[1-9]\d{10,14}$/,
+        CLEANUP: /[-.+() ]/g
+    };
+	
+	// Internal Attributes
+	var _hasError = false;
+	var _isInputValid = false;
+	var _isOutputValid = false;
+	var _newNumber = "";
+	
+	function isInputValid() {
+        return REGEX.VALIDATE.test(phoneNumber);
+    }
+	
+	function isOutputValid() {
+        return REGEX.VALIDATE.test(_newNumber);
+    }
+	
+	function validateInputs() {
+		if (gs.nil(phoneNumber)) {
+			_hasError = true;
+		}
+	}
+	
+	/*
+		Remove any spaces, parenthesis or other punctuation.
+		If the number begins with a zero, remove the leading zero.
+		Prepend the country code.
+		Prepend a "+".
+	*/
+	function setNewNumber() {
+		_newNumber = phoneNumber.replace(REGEX.CLEANUP, "");
+		if (_newNumber.startsWith("0")) {
+			_newNumber = _newNumber.replace(_newNumber[0], "");
+		} else if (_newNumber.startsWith(ccc)) {
+			_newNumber = _newNumber.substring(ccc.length);
+		}
+		_newNumber = "+" + ccc + _newNumber; 
+	}
+
+    function transform() {
+		if (_hasError) {
+			return;
+		}
+		if (!isInputValid()) {
+			// If the input is invalid we must have a country code
+			if (gs.nil(ccc)) {
+				return;
+			}
+			setNewNumber();
+			if (isOutputValid()) {
+				_isOutputValid = true;
+			}
+		} else {
+			_isInputValid = true;
+			_newNumber = phoneNumber;
+			_isOutputValid = true;
+		}
+    }
+	
+	// This is a constructor-like function
+	(function init() {
+		validateInputs();
+		if (_hasError) {
+			return;
+		}
+		transform();
+	}());
+
+	// EXTERNAL API
+	return {
+		isInputValid: isInputValid,
+		isOutputValid: isOutputValid,
+		getOutput: function () {
+			return {
+				raw: phoneNumber || "",
+				formatted: _newNumber || "",
+				countryCode: ccc || "",
+				isInputValid: _isInputValid,
+				isOutputValid: _isOutputValid
+			};
+		},
+		getRawNumber: function () {
+			return phoneNumber || "";
+		},
+		getCCC: function () {
+			return ccc || "";
+		},
+		getNewNumber: function () {
+			return _newNumber || "";
+		}
+    };
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-18 14:08:35</sys_created_on>
+        <sys_id>484cc8b41b1311105dc0ea03b24bcb52</sys_id>
+        <sys_name>E164Converter</sys_name>
+        <sys_package display_value="E164 Converter" source="x_441902_e164_conv">093c44341b1311105dc0ea03b24bcb76</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="E164 Converter">093c44341b1311105dc0ea03b24bcb76</sys_scope>
+        <sys_update_name>sys_script_include_484cc8b41b1311105dc0ea03b24bcb52</sys_update_name>
+    </sys_script_include>
+</record_update>
