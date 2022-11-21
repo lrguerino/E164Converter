@@ -22,98 +22,101 @@ Output: +12252140435&#13;
 gs.info(JSON.stringify(util.getOutput()))&#13;
 {"raw":"2252140435","isRawValid":false,"formatted":"+12252140435","isFormattedValid":true,"countryCode":"1"}</description>
         <name>E164Converter</name>
-        <script><![CDATA[var E164Converter = function (phoneNumber, ccc) {
+        <script><![CDATA[const E164Converter = (phoneNumber, ccc) => {
 
-    var REGEX = {
+	// INTERNAL API
+	
+    const REGEX = {
         VALIDATE: /^\+[1-9]\d{10,14}$/,
         CLEANUP: /[-.+() ]/g
     };
 	
-	// Internal Attributes
-	var _hasError = false;
-	var _isInputValid = false;
-	var _isOutputValid = false;
-	var _newNumber = "";
+	let _hasError = false;
+	let _is_input_valid = false;
+	let _is_output_valid = false;
+	let _newNumber = "";
 	
-	function isInputValid() {
+	const _isInputValid = () => {
         return REGEX.VALIDATE.test(phoneNumber);
-    }
+    };
 	
-	function isOutputValid() {
+	const _isOutputValid = () => {
         return REGEX.VALIDATE.test(_newNumber);
-    }
+    };
 	
-	function validateInputs() {
+	const _validateInputs = () => {
 		if (gs.nil(phoneNumber)) {
 			_hasError = true;
 		}
-	}
+	};
 	
 	/*
 		Remove any spaces, parenthesis or other punctuation.
 		If the number begins with a zero, remove the leading zero.
+		If the number begins with the ccc code, remove it
 		Prepend the country code.
 		Prepend a "+".
 	*/
-	function setNewNumber() {
-		_newNumber = phoneNumber.replace(REGEX.CLEANUP, "");
+	
+	const _setNewNumber = () => {
+		_newNumber = phoneNumber.replaceAll(REGEX.CLEANUP, "");
 		if (_newNumber.startsWith("0")) {
 			_newNumber = _newNumber.replace(_newNumber[0], "");
 		} else if (_newNumber.startsWith(ccc)) {
 			_newNumber = _newNumber.substring(ccc.length);
 		}
 		_newNumber = "+" + ccc + _newNumber; 
-	}
+	};
 
-    function transform() {
+    const _transform = () => {
 		if (_hasError) {
 			return;
 		}
-		if (!isInputValid()) {
+		if (!_isInputValid()) {
 			// If the input is invalid we must have a country code
 			if (gs.nil(ccc)) {
 				return;
 			}
-			setNewNumber();
-			if (isOutputValid()) {
-				_isOutputValid = true;
+			_setNewNumber();
+			if (_isOutputValid()) {
+				_is_output_valid = true;
 			}
 		} else {
-			_isInputValid = true;
+			_is_input_valid = true;
 			_newNumber = phoneNumber;
-			_isOutputValid = true;
+			_is_output_valid = true;
 		}
-    }
+    };
 	
 	// This is a constructor-like function
-	(function init() {
-		validateInputs();
+	(function _init() {
+		_validateInputs();
 		if (_hasError) {
 			return;
 		}
-		transform();
+		_transform();
 	}());
 
 	// EXTERNAL API
 	return {
-		isInputValid: isInputValid,
-		isOutputValid: isOutputValid,
-		getOutput: function () {
+		isInputValid: _isInputValid,
+		isOutputValid: _isOutputValid,
+		getOutput: () => {
 			return {
 				raw: phoneNumber || "",
 				formatted: _newNumber || "",
 				countryCode: ccc || "",
-				isInputValid: _isInputValid,
-				isOutputValid: _isOutputValid
+				isInputValid: _is_input_valid,
+				isOutputValid: _is_output_valid
 			};
 		},
-		getRawNumber: function () {
+		getRawNumber: () => {
 			return phoneNumber || "";
 		},
-		getCCC: function () {
+		getCCC: () => {
 			return ccc || "";
 		},
-		getNewNumber: function () {
+		getNewNumber: () => {
 			return _newNumber || "";
 		}
     };
