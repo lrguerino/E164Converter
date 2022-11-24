@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties">
+    <sys_properties action="INSERT_OR_UPDATE">
+        <choices/>
+        <description>Default sys_id of the phone territory used in the location record</description>
+        <ignore_cache>true</ignore_cache>
+        <is_private>false</is_private>
+        <name>x_441902_e164_conv.phone_territory.default</name>
+        <read_roles/>
+        <suffix>phone_territory.default</suffix>
+        <sys_class_name>sys_properties</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-22 16:24:26</sys_created_on>
+        <sys_id>07d159861bd751105dc0ea03b24bcbf2</sys_id>
+        <sys_name>x_441902_e164_conv.phone_territory.default</sys_name>
+        <sys_package display_value="E164 Converter" source="x_441902_e164_conv">093c44341b1311105dc0ea03b24bcb76</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="E164 Converter">093c44341b1311105dc0ea03b24bcb76</sys_scope>
+        <sys_update_name>sys_properties_07d159861bd751105dc0ea03b24bcbf2</sys_update_name>
+        <type>short_string</type>
+        <value>7ba72002eb1201007128a5fc5206fecc</value>
+        <write_roles/>
+    </sys_properties>
+    <sys_translated_text action="delete_multiple" query="documentkey=07d159861bd751105dc0ea03b24bcbf2"/>
+</record_update>

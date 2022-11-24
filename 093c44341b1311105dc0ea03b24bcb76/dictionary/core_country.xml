@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element attributes="all_tables.text_index_translations=true" create_roles="user_admin" db_object_id="bb7fca20f90211108c8bd16244dfe749" label="Country" max_length="40" name="core_country" text_index="true" type="collection">
+        <element label="Phone Territory" max_length="32" name="x_441902_e164_conv_phone_territory" reference="sys_phone_territory" type="reference"/>
+        <element label="Search Key Words" max_length="400" name="x_441902_e164_conv_search_key_words" type="string"/>
+    </element>
+</database>

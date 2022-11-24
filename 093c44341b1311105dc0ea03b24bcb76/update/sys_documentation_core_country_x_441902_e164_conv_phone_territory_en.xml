@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="x_441902_e164_conv_phone_territory" label="Phone Territory" language="en" table="core_country">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>x_441902_e164_conv_phone_territory</element>
+            <help/>
+            <hint/>
+            <label>Phone Territory</label>
+            <language>en</language>
+            <name>core_country</name>
+            <plural>Phone Territories</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2022-11-22 16:22:16</sys_created_on>
+            <sys_name>Phone Territory</sys_name>
+            <sys_package display_value="E164 Converter" source="x_441902_e164_conv">093c44341b1311105dc0ea03b24bcb76</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="E164 Converter">093c44341b1311105dc0ea03b24bcb76</sys_scope>
+            <sys_update_name>sys_documentation_core_country_x_441902_e164_conv_phone_territory_en</sys_update_name>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>
